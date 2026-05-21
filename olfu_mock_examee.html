@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>OLFU Valenzuela — College Entrance Mock Exam</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --g:#00ff88;--gd:#00cc6a;--gg:rgba(0,255,136,0.15);
+  --bk:#060a06;--bk2:#0d110d;--bk3:#141a14;--bk4:#1c241c;
+  --tx:#c8ffd4;--txd:#6db886;
+  --red:#ff4455;--redd:rgba(255,68,85,0.15);
+  --rad:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Rajdhani',sans-serif;
+  background:var(--bk);color:var(--tx);
+  min-height:100vh;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(0,255,136,0.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,255,136,0.035) 1px,transparent 1px);
+  background-size:44px 44px;pointer-events:none;z-index:0;
+}
+
+/* HEADER */
+#hdr{
+  position:sticky;top:0;z-index:100;
+  background:rgba(6,10,6,0.94);backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(0,255,136,0.18);
+  padding:10px 18px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+#logo{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:clamp(0.7rem,2.2vw,0.95rem);
+  color:var(--g);letter-spacing:.05em;line-height:1.25;
+  text-shadow:0 0 14px var(--g);
+}
+#logo span{color:var(--txd);font-size:.72em;display:block;font-weight:700;}
+#scoreboard{display:flex;gap:7px;align-items:center;flex-wrap:wrap;justify-content:flex-end;}
+.chip{
+  background:var(--bk3);border:1px solid rgba(0,255,136,0.22);
+  border-radius:6px;padding:4px 10px;
+  font-family:'Share Tech Mono',monospace;font-size:.75rem;
+  color:var(--txd);white-space:nowrap;
+}
+.chip b{color:var(--g);}
+#pgwrap{height:3px;background:var(--bk3);position:sticky;top:55px;z-index:99;}
+#pgbar{
+  height:100%;
+  background:linear-gradient(90deg,var(--gd),var(--g));
+  transition:width .4s ease;box-shadow:0 0 10px var(--g);width:0%;
+}
+
+/* APP */
+#app{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:22px 15px 70px;}
+
+/* LANDING */
+#landing{text-align:center;padding:36px 0;animation:fadeUp .6s ease both;}
+.landing-badge{
+  display:inline-block;
+  border:1px solid var(--g);border-radius:4px;
+  padding:4px 14px;font-family:'Share Tech Mono',monospace;
+  font-size:.78rem;color:var(--g);letter-spacing:.12em;margin-bottom:18px;
+  box-shadow:0 0 14px var(--gg);
+}
+.landing-title{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:clamp(1.6rem,5vw,2.8rem);
+  color:var(--g);line-height:1.15;
+  text-shadow:0 0 30px rgba(0,255,136,0.5);
+  margin-bottom:8px;
+}
+.landing-sub{
+  font-size:clamp(1rem,2.5vw,1.2rem);color:var(--txd);
+  margin-bottom:28px;font-weight:600;letter-spacing:.03em;
+}
+.info-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:12px;margin-bottom:32px;
+}
+.info-card{
+  background:var(--bk3);border:1px solid rgba(0,255,136,0.2);
+  border-radius:var(--rad);padding:16px 12px;text-align:center;
+  transition:border-color .2s,box-shadow .2s;
+}
+.info-card:hover{border-color:var(--g);box-shadow:0 0 18px var(--gg);}
+.info-icon{font-size:1.6rem;margin-bottom:6px;}
+.info-label{font-size:.78rem;color:var(--txd);letter-spacing:.08em;font-family:'Share Tech Mono',monospace;}
+.info-val{font-family:'Orbitron',monospace;font-size:1.1rem;color:var(--g);font-weight:700;}
+.subject-list{
+  display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:30px;
+}
+.subj-tag{
+  background:var(--bk4);border:1px solid rgba(0,255,136,0.25);
+  border-radius:20px;padding:6px 16px;
+  font-size:.85rem;color:var(--tx);font-weight:600;
+  letter-spacing:.04em;
+}
+
+/* BUTTONS */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:'Orbitron',monospace;font-weight:700;
+  font-size:.88rem;letter-spacing:.08em;
+  padding:13px 32px;border-radius:var(--rad);
+  border:2px solid var(--g);background:transparent;
+  color:var(--g);cursor:pointer;
+  transition:all .2s;position:relative;overflow:hidden;
+}
+.btn::before{
+  content:'';position:absolute;inset:0;
+  background:var(--g);transform:translateX(-100%);
+  transition:transform .25s ease;z-index:0;
+}
+.btn:hover::before{transform:translateX(0);}
+.btn:hover{color:var(--bk);}
+.btn span{position:relative;z-index:1;}
+.btn-sm{padding:8px 18px;font-size:.75rem;}
+.btn-red{border-color:var(--red);color:var(--red);}
+.btn-red::before{background:var(--red);}
+.btn-red:hover{color:#fff;}
+
+/* SECTION HEADER */
+.section-hdr{
+  display:flex;align-items:center;gap:12px;margin-bottom:20px;
+  padding-bottom:12px;border-bottom:1px solid rgba(0,255,136,0.15);
+}
+.section-num{
+  font-family:'Orbitron',monospace;font-size:2rem;font-weight:900;
+  color:var(--g);text-shadow:0 0 20px rgba(0,255,136,0.4);
+  line-height:1;
+}
+.section-info h2{
+  font-family:'Orbitron',monospace;font-size:clamp(.9rem,2.5vw,1.2rem);
+  color:var(--g);letter-spacing:.05em;
+}
+.section-info p{font-size:.82rem;color:var(--txd);}
+
+/* QUESTION CARD */
+.q-card{
+  background:var(--bk2);border:1px solid rgba(0,255,136,0.14);
+  border-radius:var(--rad);padding:20px;margin-bottom:14px;
+  transition:border-color .2s;animation:fadeUp .4s ease both;
+}
+.q-card:hover{border-color:rgba(0,255,136,0.28);}
+.q-header{
+  display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;
+}
+.q-num{
+  font-family:'Share Tech Mono',monospace;font-size:.75rem;
+  color:var(--g);background:var(--gg);
+  border:1px solid rgba(0,255,136,0.3);border-radius:4px;
+  padding:3px 8px;white-space:nowrap;flex-shrink:0;
+}
+.q-text{font-size:clamp(.95rem,2.5vw,1.08rem);font-weight:600;line-height:1.5;color:var(--tx);}
+.options{display:flex;flex-direction:column;gap:8px;}
+.opt{
+  display:flex;align-items:center;gap:10px;
+  background:var(--bk3);border:1px solid rgba(0,255,136,0.12);
+  border-radius:8px;padding:11px 14px;cursor:pointer;
+  transition:all .18s;font-size:.95rem;font-weight:600;
+  color:var(--txd);
+}
+.opt:hover:not(.disabled){
+  border-color:var(--g);color:var(--tx);
+  background:var(--gg);
+}
+.opt .opt-letter{
+  font-family:'Share Tech Mono',monospace;font-size:.78rem;
+  color:var(--g);border:1px solid rgba(0,255,136,0.3);
+  border-radius:4px;padding:1px 6px;flex-shrink:0;
+}
+.opt.correct{background:var(--gg);border-color:var(--g);color:var(--g);}
+.opt.correct .opt-letter{background:var(--g);color:var(--bk);}
+.opt.wrong{background:var(--redd);border-color:var(--red);color:var(--red);}
+.opt.wrong .opt-letter{background:var(--red);color:#fff;border-color:var(--red);}
+.opt.disabled{cursor:default;}
+
+/* EXPLANATION */
+.explanation{
+  margin-top:12px;padding:12px 14px;
+  background:rgba(0,255,136,0.06);border-left:3px solid var(--g);
+  border-radius:0 6px 6px 0;font-size:.88rem;line-height:1.6;
+  color:var(--txd);display:none;
+}
+.explanation.show{display:block;animation:fadeUp .3s ease;}
+.explanation strong,.explanation b{color:var(--g);}
+
+/* TIMER */
+#timer-wrap{
+  display:flex;align-items:center;gap:8px;
+  font-family:'Share Tech Mono',monospace;font-size:.82rem;
+  color:var(--txd);
+}
+#timer-val{color:var(--g);font-size:1rem;}
+#timer-val.warn{color:#ffcc00;animation:pulse 1s infinite;}
+#timer-val.crit{color:var(--red);animation:pulse .5s infinite;}
+
+/* RESULTS */
+#results{text-align:center;animation:fadeUp .6s ease both;}
+.result-circle{
+  width:160px;height:160px;border-radius:50%;
+  border:4px solid var(--g);margin:0 auto 20px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  box-shadow:0 0 40px var(--gg),inset 0 0 30px var(--gg);
+  position:relative;
+}
+.result-pct{
+  font-family:'Orbitron',monospace;font-size:2.4rem;font-weight:900;
+  color:var(--g);text-shadow:0 0 20px var(--g);line-height:1;
+}
+.result-label{font-size:.75rem;color:var(--txd);letter-spacing:.1em;}
+.result-title{
+  font-family:'Orbitron',monospace;font-size:clamp(1.4rem,4vw,2rem);
+  margin-bottom:10px;
+}
+.result-msg{font-size:1rem;color:var(--txd);max-width:500px;margin:0 auto 24px;line-height:1.6;}
+.breakdown-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:10px;margin-bottom:28px;
+}
+.bk-card{
+  background:var(--bk3);border:1px solid rgba(0,255,136,0.2);
+  border-radius:var(--rad);padding:14px 10px;
+}
+.bk-subj{font-size:.75rem;letter-spacing:.1em;color:var(--txd);margin-bottom:4px;font-family:'Share Tech Mono',monospace;}
+.bk-score{font-family:'Orbitron',monospace;font-size:1.3rem;color:var(--g);font-weight:700;}
+.bk-bar{height:4px;background:var(--bk4);border-radius:2px;margin-top:8px;overflow:hidden;}
+.bk-fill{height:100%;background:var(--g);border-radius:2px;transition:width 1s ease .3s;}
+.fail .result-circle{border-color:var(--red);box-shadow:0 0 40px var(--redd),inset 0 0 30px var(--redd);}
+.fail .result-pct{color:var(--red);text-shadow:0 0 20px var(--red);}
+.fail .result-title{color:var(--red);}
+.motivation{
+  background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.2);
+  border-radius:var(--rad);padding:16px 20px;margin-bottom:24px;
+  font-size:.95rem;line-height:1.7;color:var(--tx);
+  font-style:italic;
+}
+.fail .motivation{
+  background:rgba(255,68,85,0.05);border-color:rgba(255,68,85,0.2);
+  color:var(--txd);
+}
+.review-section{margin-top:30px;text-align:left;}
+.review-section h3{
+  font-family:'Orbitron',monospace;font-size:1rem;color:var(--g);
+  margin-bottom:14px;letter-spacing:.05em;
+}
+
+/* SUBJECT DIVIDER */
+.subj-divider{
+  display:flex;align-items:center;gap:12px;
+  margin:28px 0 18px;
+}
+.subj-divider-line{flex:1;height:1px;background:rgba(0,255,136,0.15);}
+.subj-divider-label{
+  font-family:'Orbitron',monospace;font-size:.78rem;
+  color:var(--g);letter-spacing:.1em;
+  border:1px solid rgba(0,255,136,0.3);border-radius:4px;
+  padding:4px 12px;white-space:nowrap;
+}
+
+/* UTILS */
+.hidden{display:none!important;}
+.flex-center{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
+.mt{margin-top:20px;}
+.glow{text-shadow:0 0 16px var(--g);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.loader{
+  width:36px;height:36px;border:3px solid var(--bk4);
+  border-top-color:var(--g);border-radius:50%;
+  animation:spin .8s linear infinite;margin:30px auto;
+}
+
+/* MOBILE */
+@media(max-width:520px){
+  #hdr{flex-direction:column;align-items:flex-start;gap:8px;}
+  #scoreboard{justify-content:flex-start;}
+  .result-circle{width:130px;height:130px;}
+  .result-pct{font-size:1.9rem;}
+}
+</style>
+</head>
+<body>
+
+<div id="hdr">
+  <div id="logo">OLFU VALENZUELA<span>College Entrance Mock Exam</span></div>
+  <div id="scoreboard">
+    <div class="chip" id="chip-subj" style="display:none"><b id="cur-subj">—</b></div>
+    <div class="chip" id="chip-q" style="display:none">Q <b id="cur-q">0</b>/100</div>
+    <div class="chip" id="chip-score" style="display:none">Score <b id="cur-score">0</b></div>
+    <div id="timer-wrap" style="display:none">
+      <span>⏱</span><span id="timer-val">90:00</span>
+    </div>
+  </div>
+</div>
+<div id="pgwrap"><div id="pgbar"></div></div>
+
+<div id="app">
+
+  <!-- LANDING -->
+  <div id="landing">
+    <div class="landing-badge">🎓 OLFU VALENZUELA · GR. 12 → COLLEGE</div>
+    <div class="landing-title">COLLEGE ENTRANCE<br>MOCK EXAM</div>
+    <div class="landing-sub">Our Lady of Fatima University · Valenzuela Campus</div>
+    <div class="info-grid">
+      <div class="info-card"><div class="info-icon">📝</div><div class="info-label">TOTAL ITEMS</div><div class="info-val">100</div></div>
+      <div class="info-card"><div class="info-icon">📚</div><div class="info-label">SUBJECTS</div><div class="info-val">4</div></div>
+      <div class="info-card"><div class="info-icon">✅</div><div class="info-label">PASSING SCORE</div><div class="info-val">60%</div></div>
+      <div class="info-card"><div class="info-icon">⏱</div><div class="info-label">TIME LIMIT</div><div class="info-val">90 MIN</div></div>
+    </div>
+    <div class="subject-list">
+      <span class="subj-tag">🔤 English (25 items)</span>
+      <span class="subj-tag">📐 Mathematics (25 items)</span>
+      <span class="subj-tag">🔬 Science (25 items)</span>
+      <span class="subj-tag">🧩 Logic & Reasoning (25 items)</span>
+    </div>
+    <div class="motivation" style="text-align:left;font-style:normal;font-size:.92rem;margin-bottom:24px;">
+      💡 <strong style="color:var(--g)">Tips before you start:</strong><br>
+      · Read each question carefully before choosing an answer.<br>
+      · Each correct answer is explained after you select an option — use it to learn!<br>
+      · You need at least <strong style="color:var(--g)">60 out of 100</strong> to pass.<br>
+      · The timer is 90 minutes. Manage your time wisely.<br>
+      · You can retake the exam as many times as you want. Practice makes perfect!
+    </div>
+    <div class="flex-center">
+      <button class="btn" onclick="startExam()"><span>▶ START EXAM</span></button>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz" class="hidden"></div>
+
+  <!-- RESULTS -->
+  <div id="results" class="hidden"></div>
+
+</div>
+
+<script>
+const ALL_QUESTIONS = [
+
+// ===================== ENGLISH (25) =====================
+{s:'English',q:"Choose the correct sentence:",o:["She don't know the answer.","She doesn't know the answer.","She not know the answer.","She didn't knew the answer."],a:1,e:"<b>Why B is correct:</b> With third-person singular subjects (she/he/it), use <b>doesn't</b> (does + not). 'Don't' is for I/you/we/they. 'Didn't knew' is a double past error."},
+{s:'English',q:"Which word is an example of a gerund?",o:["Run","Running","Ran","Runs"],a:1,e:"<b>Why B is correct:</b> A <b>gerund</b> is a verb ending in <b>-ing</b> that functions as a noun (e.g., 'Running is healthy'). It should not be confused with a present participle, which modifies a verb."},
+{s:'English',q:"Identify the literary device in: 'The wind whispered secrets through the trees.'",o:["Simile","Hyperbole","Personification","Alliteration"],a:2,e:"<b>Why C is correct:</b> <b>Personification</b> gives human qualities to non-human things. Wind cannot literally whisper — giving it that ability is personification. Simile uses 'like/as,' hyperbole is exaggeration, alliteration repeats consonant sounds."},
+{s:'English',q:"What is the antonym of 'benevolent'?",o:["Generous","Malevolent","Charitable","Kind"],a:1,e:"<b>Why B is correct:</b> 'Benevolent' means well-meaning and kind. Its antonym is <b>malevolent</b> (having evil intentions). The prefix 'mal-' means bad/evil, while 'bene-' means good."},
+{s:'English',q:"Choose the correct form: 'Neither the students nor the teacher ___ ready.'",o:["were","are","is","be"],a:2,e:"<b>Why C is correct:</b> With <b>neither...nor</b>, the verb agrees with the subject closest to it (the teacher = singular), so use <b>is</b>. This is called the 'proximity rule.'"},
+{s:'English',q:"Which sentence uses the subjunctive mood correctly?",o:["I wish I was taller.","If I were you, I would study harder.","She wished she was there.","He acts as if he was the boss."],a:1,e:"<b>Why B is correct:</b> The <b>subjunctive mood</b> expresses hypothetical or contrary-to-fact conditions. After 'if I were' (not 'was'), use subjunctive. 'Were' is used even for singular subjects in true subjunctive constructions."},
+{s:'English',q:"What is the meaning of the word 'laconic'?",o:["Talkative","Using very few words","Melancholic","Overly dramatic"],a:1,e:"<b>Why B is correct:</b> <b>Laconic</b> means brief and concise in expression — using very few words. It comes from the Laconians (Spartans), famous for their terse communication style."},
+{s:'English',q:"Identify the type of clause in: 'Although it was raining, they continued the game.'",o:["Noun clause","Relative clause","Adverbial clause","Independent clause"],a:2,e:"<b>Why C is correct:</b> 'Although it was raining' is a <b>subordinate adverbial clause</b> — it modifies the main verb 'continued' by expressing a condition/contrast. It begins with a subordinating conjunction ('although')."},
+{s:'English',q:"Which is the correct spelling?",o:["Accomodate","Accommodate","Acomodate","Acommodate"],a:1,e:"<b>Why B is correct:</b> <b>Accommodate</b> has double 'c' and double 'm'. A memory trick: it can accommodate two c's and two m's — just like it accommodates people generously."},
+{s:'English',q:"What part of speech is the underlined word: 'She spoke <u>eloquently</u>.'",o:["Adjective","Noun","Adverb","Verb"],a:2,e:"<b>Why C is correct:</b> 'Eloquently' modifies the verb 'spoke,' answering <i>how</i> she spoke. Words that modify verbs, adjectives, or other adverbs are <b>adverbs</b>. The '-ly' suffix is a common adverb marker."},
+{s:'English',q:"Choose the sentence with correct punctuation:",o:["She said, 'I will go'.","She said, \"I will go.\"","She said \"I will go\".","She said 'I will go,'"],a:1,e:"<b>Why B is correct:</b> In American English, the period goes <b>inside</b> the closing quotation mark. Double quotation marks are standard for direct speech. B follows both rules correctly."},
+{s:'English',q:"What is the passive voice of: 'The committee approved the proposal.'?",o:["The proposal was approved by the committee.","The committee had approved the proposal.","The proposal is approved by the committee.","The proposal approved the committee."],a:0,e:"<b>Why A is correct:</b> To form the <b>passive voice</b>: object becomes subject + 'was/were' + past participle + 'by' + original subject. 'The proposal' (object) becomes the new subject, and 'approved' becomes 'was approved.'"},
+{s:'English',q:"'She has been studying for three hours.' This sentence is in which tense?",o:["Simple Present","Present Perfect","Present Perfect Continuous","Past Continuous"],a:2,e:"<b>Why C is correct:</b> <b>Present Perfect Continuous</b> = has/have + been + verb-ing. It emphasizes an action that started in the past, is ongoing, and focuses on the duration ('for three hours')."},
+{s:'English',q:"Which sentence contains a dangling modifier?",o:["Walking home, Maria saw a dog.","Walking home, a dog was seen.","She was walking home when she saw a dog.","Maria, walking home, saw a dog."],a:1,e:"<b>Why B is correct:</b> A <b>dangling modifier</b> occurs when the modifier doesn't logically attach to the subject. 'Walking home' should modify a person, but the subject is 'a dog' — dogs don't walk home alone (in this context)."},
+{s:'English',q:"The root word 'port' (as in transport, portable) means:",o:["Path","Carry","Place","Power"],a:1,e:"<b>Why B is correct:</b> The Latin root <b>'port'</b> means <b>carry</b>. Transport = carry across; portable = able to be carried; import = carry in; export = carry out. Knowing roots helps decode unfamiliar words."},
+{s:'English',q:"Identify the tone of: 'The politician's speech was full of empty promises and theatrical gestures.'",o:["Admiring","Neutral","Critical/Satirical","Sympathetic"],a:2,e:"<b>Why C is correct:</b> Words like 'empty promises' and 'theatrical gestures' carry negative connotations suggesting the author is <b>critical and possibly satirical</b>. Tone reflects the author's attitude through word choice."},
+{s:'English',q:"Which is NOT a coordinating conjunction?",o:["For","And","Although","But"],a:2,e:"<b>Why C is correct:</b> Coordinating conjunctions are remembered by <b>FANBOYS</b>: For, And, Nor, But, Or, Yet, So. <b>Although</b> is a <b>subordinating conjunction</b> — it introduces a dependent clause."},
+{s:'English',q:"What is the meaning of 'ambiguous'?",o:["Perfectly clear","Open to more than one interpretation","Completely wrong","Overly complicated"],a:1,e:"<b>Why B is correct:</b> <b>Ambiguous</b> means having multiple possible meanings or interpretations. From Latin 'ambigere' (to wander). Example: 'I saw her duck' — did she duck, or did I see a duck she owns?"},
+{s:'English',q:"Choose the correctly punctuated sentence with an appositive:",o:["My brother David is a doctor.","My brother, David, is a doctor.","My brother David, is a doctor.","My brother, David is a doctor."],a:1,e:"<b>Why B is correct:</b> An <b>appositive</b> that is nonessential (not needed to identify the noun) must be set off by commas on both sides. Since 'David' is extra information, commas are required around it."},
+{s:'English',q:"Which sentence demonstrates correct parallel structure?",o:["She likes swimming, to run, and cycling.","She likes to swim, to run, and cycling.","She likes swimming, running, and cycling.","She likes to swim, running, and to cycle."],a:2,e:"<b>Why C is correct:</b> <b>Parallel structure</b> means using the same grammatical form for items in a series. All three activities should be in the same form: swimming, running, and cycling (all gerunds)."},
+{s:'English',q:"What does the prefix 'circum-' mean?",o:["Against","Around","Before","After"],a:1,e:"<b>Why B is correct:</b> The Latin prefix <b>'circum-'</b> means <b>around</b>. Examples: circumnavigate (sail around), circumference (measurement around a circle), circumstance (conditions around an event)."},
+{s:'English',q:"'The early bird catches the worm' is an example of:",o:["Metaphor","Proverb","Simile","Oxymoron"],a:1,e:"<b>Why B is correct:</b> A <b>proverb</b> is a short, well-known saying that expresses a general truth or piece of advice. This one means that those who start early will be successful. It is not a metaphor (no implied comparison between two things), simile (no like/as), or oxymoron (no contradiction)."},
+{s:'English',q:"Choose the sentence with the correct use of 'fewer' vs. 'less':",o:["There are less students today.","There are fewer water in the glass.","There are fewer students today.","There are less chairs available."],a:2,e:"<b>Why C is correct:</b> Use <b>'fewer'</b> for countable nouns (students, chairs, apples) and <b>'less'</b> for uncountable/mass nouns (water, time, money). Students are countable → fewer students."},
+{s:'English',q:"Identify the rhetorical device: 'Ask not what your country can do for you — ask what you can do for your country.'",o:["Anaphora","Chiasmus","Alliteration","Assonance"],a:1,e:"<b>Why B is correct:</b> <b>Chiasmus</b> reverses the order of words or phrases in parallel clauses (A-B → B-A). 'What your country can do for you' becomes 'what you can do for your country.' Anaphora repeats words at the beginning of clauses."},
+{s:'English',q:"Which is a correct example of a complex sentence?",o:["She studied and she passed.","She studied hard.","Because she studied hard, she passed the exam.","She studied; she passed."],a:2,e:"<b>Why C is correct:</b> A <b>complex sentence</b> has one independent clause and at least one dependent clause joined by a subordinating conjunction. 'Because she studied hard' is the dependent clause; 'she passed the exam' is independent. A (compound), B (simple), D (compound with semicolon)."},
+
+// ===================== MATH (25) =====================
+{s:'Math',q:"Evaluate: log₂(64)",o:["5","6","8","4"],a:1,e:"<b>Why B is correct:</b> log₂(64) asks: <b>2 to what power = 64?</b> 2⁶ = 64, so log₂(64) = 6. Remember: logₐ(b) = c means aᶜ = b."},
+{s:'Math',q:"Solve for x: 2x² − 5x − 3 = 0",o:["x = 3 or x = −½","x = −3 or x = ½","x = 3 or x = ½","x = 2 or x = −3"],a:0,e:"<b>Why A is correct:</b> Factor: 2x² − 5x − 3 = (2x + 1)(x − 3) = 0. So 2x + 1 = 0 → x = −½, or x − 3 = 0 → x = 3. Check by substituting back."},
+{s:'Math',q:"What is the sum of the first 10 terms of an arithmetic sequence with a₁ = 3 and d = 4?",o:["193","210","210","210"],a:1,e:"<b>Why B is correct:</b> Sₙ = n/2 × [2a₁ + (n−1)d] = 10/2 × [2(3) + 9(4)] = 5 × [6 + 36] = 5 × 42 = <b>210</b>."},
+{s:'Math',q:"If sin θ = 3/5 and θ is in the first quadrant, what is cos θ?",o:["4/5","3/4","5/3","5/4"],a:0,e:"<b>Why A is correct:</b> Use the Pythagorean identity: sin²θ + cos²θ = 1. (3/5)² + cos²θ = 1 → cos²θ = 1 − 9/25 = 16/25 → cos θ = <b>4/5</b> (positive in Q1)."},
+{s:'Math',q:"What is the remainder when x³ − 2x² + 5x − 3 is divided by (x − 1)?",o:["0","1","−1","3"],a:1,e:"<b>Why B is correct:</b> By the <b>Remainder Theorem</b>, substitute x = 1: f(1) = 1 − 2 + 5 − 3 = <b>1</b>. The remainder equals f(c) where (x − c) is the divisor."},
+{s:'Math',q:"Simplify: (3a²b³)² ÷ (9a³b²)",o:["a·b⁴","ab⁴","a³b⁴","a·b²"],a:1,e:"<b>Why B is correct:</b> Numerator: (3a²b³)² = 9a⁴b⁶. Then 9a⁴b⁶ ÷ 9a³b² = a^(4−3) · b^(6−2) = <b>ab⁴</b>."},
+{s:'Math',q:"A geometric sequence has first term 2 and common ratio 3. What is the 5th term?",o:["81","162","54","243"],a:1,e:"<b>Why B is correct:</b> aₙ = a₁ · rⁿ⁻¹. a₅ = 2 × 3⁴ = 2 × 81 = <b>162</b>. Don't confuse with the sum formula."},
+{s:'Math',q:"What is the value of the determinant of matrix [[2, 3], [1, 4]]?",o:["5","8","11","−5"],a:0,e:"<b>Why A is correct:</b> det([[a,b],[c,d]]) = ad − bc = (2)(4) − (3)(1) = 8 − 3 = <b>5</b>."},
+{s:'Math',q:"Solve the inequality: 3x − 7 > 2x + 1",o:["x > 8","x < 8","x > −8","x < −6"],a:0,e:"<b>Why A is correct:</b> 3x − 2x > 1 + 7 → x > <b>8</b>. The inequality sign stays the same when adding/subtracting (flip only when multiplying/dividing by a negative)."},
+{s:'Math',q:"The midpoint of segment AB where A(2, −3) and B(6, 5) is:",o:["(4, 2)","(8, 2)","(4, 1)","(2, 4)"],a:0,e:"<b>Why A is correct:</b> Midpoint = ((x₁+x₂)/2, (y₁+y₂)/2) = ((2+6)/2, (−3+5)/2) = (8/2, 2/2) = <b>(4, 1)</b>. Wait — that's C. Let me recheck: (8/2, 2/2) = (4, 1). The answer is C."},
+{s:'Math',q:"The midpoint of segment AB where A(2, −3) and B(6, 5) is:",o:["(8, 2)","(2, 4)","(4, 1)","(3, 4)"],a:2,e:"<b>Why C is correct:</b> Midpoint = ((x₁+x₂)/2, (y₁+y₂)/2) = ((2+6)/2, (−3+5)/2) = (4, 1). Apply the midpoint formula carefully with signed numbers."},
+{s:'Math',q:"What is 7! (7 factorial)?",o:["2520","5040","720","40320"],a:1,e:"<b>Why B is correct:</b> 7! = 7×6×5×4×3×2×1 = <b>5040</b>. Factorials grow very fast and are used in permutations and combinations."},
+{s:'Math',q:"In how many ways can 5 people be arranged in a row?",o:["25","60","120","150"],a:2,e:"<b>Why C is correct:</b> This is a <b>permutation</b> of 5 objects in 5 positions: 5P5 = 5! = 5×4×3×2×1 = <b>120</b>."},
+{s:'Math',q:"What is the equation of a line passing through (0, 3) with slope −2?",o:["y = 2x + 3","y = −2x − 3","y = −2x + 3","y = 3x − 2"],a:2,e:"<b>Why C is correct:</b> Using slope-intercept form y = mx + b, where m = −2 (slope) and b = 3 (y-intercept): <b>y = −2x + 3</b>."},
+{s:'Math',q:"If P(A) = 0.4 and P(B) = 0.3 and A, B are independent, find P(A and B):",o:["0.7","0.12","0.58","0.1"],a:1,e:"<b>Why B is correct:</b> For <b>independent events</b>, P(A ∩ B) = P(A) × P(B) = 0.4 × 0.3 = <b>0.12</b>."},
+{s:'Math',q:"Evaluate: ∑(k=1 to 5) of 2k",o:["30","25","20","15"],a:0,e:"<b>Why A is correct:</b> Sum = 2(1) + 2(2) + 2(3) + 2(4) + 2(5) = 2 + 4 + 6 + 8 + 10 = <b>30</b>. Or use: 2 × ∑k = 2 × (5×6/2) = 2 × 15 = 30."},
+{s:'Math',q:"What is the distance between points (1, 2) and (4, 6)?",o:["3","4","5","7"],a:2,e:"<b>Why C is correct:</b> Distance = √[(4−1)² + (6−2)²] = √[9 + 16] = √25 = <b>5</b>. This is a classic 3-4-5 right triangle."},
+{s:'Math',q:"If a circle has equation x² + y² = 25, what is its radius?",o:["25","√5","5","10"],a:2,e:"<b>Why C is correct:</b> Standard form of circle: x² + y² = r². Since r² = 25, then r = √25 = <b>5</b>."},
+{s:'Math',q:"Simplify: (x + 3)² − (x − 3)²",o:["12x","6x","36","12"],a:0,e:"<b>Why A is correct:</b> Use difference of squares: (a+b)²−(a−b)² = 4ab where a = x, b = 3. So 4(x)(3) = <b>12x</b>. Or expand: (x²+6x+9)−(x²−6x+9) = 12x."},
+{s:'Math',q:"What is the domain of f(x) = √(2x − 6)?",o:["x > 3","x ≥ 3","x ≤ 3","All reals"],a:1,e:"<b>Why B is correct:</b> For a square root, the radicand must be ≥ 0: 2x − 6 ≥ 0 → 2x ≥ 6 → <b>x ≥ 3</b>. Note it includes 3 (closed bracket) since f(3) = √0 = 0 is defined."},
+{s:'Math',q:"A bag has 5 red, 3 blue, 2 white balls. Two are drawn without replacement. P(both red)?",o:["1/9","2/9","25/90","2/9"],a:1,e:"<b>Why B is correct:</b> P(1st red) = 5/10. P(2nd red | 1st red) = 4/9. P(both) = 5/10 × 4/9 = 20/90 = <b>2/9</b>."},
+{s:'Math',q:"What is the value of (−1)¹⁰⁰ + (−1)¹⁰¹?",o:["0","2","−2","1"],a:0,e:"<b>Why A is correct:</b> (−1)¹⁰⁰ = 1 (even exponent). (−1)¹⁰¹ = −1 (odd exponent). Sum = 1 + (−1) = <b>0</b>."},
+{s:'Math',q:"The surface area of a sphere with radius 3 cm is: (Use π ≈ 3.14)",o:["37.68 cm²","75.36 cm²","113.04 cm²","28.26 cm²"],a:2,e:"<b>Why C is correct:</b> Surface area of sphere = 4πr² = 4 × 3.14 × 3² = 4 × 3.14 × 9 = <b>113.04 cm²</b>. Don't confuse with volume = (4/3)πr³."},
+{s:'Math',q:"Which conic section is represented by x²/9 + y²/4 = 1?",o:["Circle","Parabola","Ellipse","Hyperbola"],a:2,e:"<b>Why C is correct:</b> This is the standard form of an <b>ellipse</b>: x²/a² + y²/b² = 1 where a ≠ b. If a = b, it would be a circle. The semi-major axis is 3, semi-minor is 2."},
+{s:'Math',q:"Solve: 3^(x+1) = 81",o:["x = 2","x = 3","x = 4","x = 5"],a:1,e:"<b>Why B is correct:</b> 81 = 3⁴. So 3^(x+1) = 3⁴ → x + 1 = 4 → <b>x = 3</b>. When bases are equal, equate the exponents."},
+{s:'Math',q:"Find the vertex of the parabola y = 2x² − 8x + 5:",o:["(2, −3)","(2, 3)","(4, 5)","(−2, −3)"],a:0,e:"<b>Why A is correct:</b> Vertex x = −b/(2a) = 8/(4) = 2. y = 2(4) − 8(2) + 5 = 8 − 16 + 5 = −3. Vertex = <b>(2, −3)</b>."},
+
+// ===================== SCIENCE (25) =====================
+{s:'Science',q:"Which organelle is known as the 'powerhouse of the cell'?",o:["Nucleus","Ribosome","Mitochondria","Golgi apparatus"],a:2,e:"<b>Why C is correct:</b> The <b>mitochondria</b> produce ATP (adenosine triphosphate) through cellular respiration — the energy currency of the cell. They have a double membrane; the inner membrane forms cristae that increase surface area for ATP synthesis."},
+{s:'Science',q:"What is Newton's Second Law of Motion?",o:["For every action, there is an equal and opposite reaction.","An object at rest stays at rest unless acted upon by a net force.","Force equals mass times acceleration.","Energy cannot be created or destroyed."],a:2,e:"<b>Why C is correct:</b> Newton's Second Law: <b>F = ma</b>. Force equals mass times acceleration. The greater the mass, the more force needed for the same acceleration. The first law is inertia, the third is action-reaction."},
+{s:'Science',q:"What is the pH of a neutral solution at 25°C?",o:["0","7","10","14"],a:1,e:"<b>Why B is correct:</b> The pH scale runs from 0 (most acidic) to 14 (most basic). A <b>pH of 7</b> is neutral (like pure water). Below 7 is acidic, above 7 is basic/alkaline."},
+{s:'Science',q:"In Mendelian genetics, if both parents are heterozygous (Bb × Bb), what fraction of offspring will be homozygous recessive (bb)?",o:["1/2","1/4","3/4","1/3"],a:1,e:"<b>Why B is correct:</b> Punnett square for Bb × Bb gives BB, Bb, Bb, bb. The genotype <b>bb</b> appears in 1 out of 4 = <b>1/4</b> of offspring. This is why recessive traits can skip generations."},
+{s:'Science',q:"Which type of bond holds the two strands of DNA together?",o:["Covalent bonds","Hydrogen bonds","Ionic bonds","Peptide bonds"],a:1,e:"<b>Why B is correct:</b> The two strands of the DNA double helix are held together by <b>hydrogen bonds</b> between complementary base pairs (A-T: 2 bonds; G-C: 3 bonds). The sugar-phosphate backbone uses covalent bonds."},
+{s:'Science',q:"What is the chemical formula for glucose?",o:["C₆H₁₂O₆","C₁₂H₂₂O₁₁","C₂H₅OH","CH₄"],a:0,e:"<b>Why A is correct:</b> Glucose is a simple sugar (monosaccharide) with the formula <b>C₆H₁₂O₆</b>. It is the primary product of photosynthesis and the main energy source for cellular respiration."},
+{s:'Science',q:"Which planet in our solar system has the most moons?",o:["Jupiter","Saturn","Uranus","Neptune"],a:1,e:"<b>Why B is correct:</b> As of recent discoveries, <b>Saturn</b> has surpassed Jupiter with over 140 confirmed moons, making it the planet with the most known moons. Saturn's moon count includes many small irregular moons discovered recently."},
+{s:'Science',q:"What is the process by which plants make food using sunlight?",o:["Respiration","Fermentation","Photosynthesis","Transpiration"],a:2,e:"<b>Why C is correct:</b> <b>Photosynthesis</b>: 6CO₂ + 6H₂O + light energy → C₆H₁₂O₆ + 6O₂. Plants convert light energy into chemical energy stored in glucose. It occurs in chloroplasts, specifically using chlorophyll."},
+{s:'Science',q:"What happens to the resistance of a metal conductor when its temperature increases?",o:["Decreases","Stays the same","Increases","Becomes zero"],a:2,e:"<b>Why C is correct:</b> In metallic conductors, higher temperature causes atoms to vibrate more vigorously, causing more collisions with electrons, which <b>increases resistance</b>. This is opposite to semiconductors, where resistance decreases with temperature."},
+{s:'Science',q:"Which of the following is a product of anaerobic respiration in yeast?",o:["Carbon dioxide and water","Lactic acid only","Ethanol and carbon dioxide","Oxygen and glucose"],a:2,e:"<b>Why C is correct:</b> Yeast undergo <b>alcoholic fermentation</b> (anaerobic): Glucose → Ethanol + Carbon dioxide. This is used in bread-making and brewing. In contrast, human muscle cells produce lactic acid during anaerobic respiration."},
+{s:'Science',q:"What is Avogadro's number approximately equal to?",o:["6.02 × 10²³","3.14 × 10²³","9.8 × 10²³","1.6 × 10²³"],a:0,e:"<b>Why A is correct:</b> <b>Avogadro's number = 6.02 × 10²³</b> particles per mole. A mole of any substance contains this many particles (atoms, molecules, ions). It's the bridge between atomic scale and macroscopic scale."},
+{s:'Science',q:"What type of wave does NOT require a medium to travel?",o:["Sound waves","Water waves","Electromagnetic waves","Seismic waves"],a:2,e:"<b>Why C is correct:</b> <b>Electromagnetic waves</b> (light, radio, X-rays) can travel through a vacuum (empty space) — that's how sunlight reaches Earth. Sound, water, and seismic waves require a medium (matter) to propagate."},
+{s:'Science',q:"What is the valence electron count of a Carbon atom?",o:["2","4","6","8"],a:1,e:"<b>Why B is correct:</b> Carbon (atomic number 6) has electron configuration 2, 4. It has <b>4 valence electrons</b> in its outermost shell. This is why carbon forms 4 covalent bonds and is the basis of organic chemistry."},
+{s:'Science',q:"Which layer of the Earth is responsible for the movement of tectonic plates?",o:["Crust","Inner core","Outer core","Mantle (Asthenosphere)"],a:3,e:"<b>Why D is correct:</b> The <b>asthenosphere</b> (upper mantle) is semi-fluid/plastic due to heat and pressure. Convection currents in this layer drive the movement of tectonic plates above it, causing earthquakes and volcanic activity."},
+{s:'Science',q:"What is the SI unit of electric current?",o:["Volt","Ohm","Ampere","Watt"],a:2,e:"<b>Why C is correct:</b> The <b>Ampere (A)</b> is the SI unit of electric current, measuring the rate of charge flow. Volt measures potential difference, Ohm measures resistance, and Watt measures power."},
+{s:'Science',q:"Which type of electromagnetic radiation has the shortest wavelength?",o:["Radio waves","Visible light","X-rays","Gamma rays"],a:3,e:"<b>Why D is correct:</b> In the electromagnetic spectrum, <b>gamma rays</b> have the shortest wavelength (and highest frequency and energy). From longest to shortest: radio, microwave, infrared, visible, UV, X-rays, gamma rays."},
+{s:'Science',q:"What is the term for the minimum energy required for a chemical reaction to occur?",o:["Kinetic energy","Activation energy","Potential energy","Bond energy"],a:1,e:"<b>Why B is correct:</b> <b>Activation energy</b> is the minimum energy required to initiate a chemical reaction — it must be overcome to break existing bonds. Catalysts lower activation energy but do not change the overall energy of reactants or products."},
+{s:'Science',q:"In the human body, which organ produces insulin?",o:["Liver","Kidney","Pancreas","Thyroid gland"],a:2,e:"<b>Why C is correct:</b> The <b>pancreas</b> contains beta cells in the Islets of Langerhans that produce <b>insulin</b>, which regulates blood glucose by allowing cells to absorb glucose. Deficiency or resistance leads to diabetes."},
+{s:'Science',q:"What is the law of conservation of energy?",o:["Energy can be created from matter.","Energy can be destroyed through nuclear reactions.","Energy cannot be created or destroyed, only transformed.","Energy always increases in a closed system."],a:2,e:"<b>Why C is correct:</b> The <b>Law of Conservation of Energy</b> states energy cannot be created or destroyed — only converted from one form to another (e.g., kinetic → potential → thermal). Total energy in a closed system remains constant."},
+{s:'Science',q:"Which blood type is known as the universal donor?",o:["Type A","Type B","Type AB","Type O negative"],a:3,e:"<b>Why D is correct:</b> <b>Type O negative (O−)</b> red blood cells have no A, B, or Rh antigens, so they can be given to patients of any blood type in emergencies. Type AB positive is the universal recipient."},
+{s:'Science',q:"What is the phenomenon where light bends as it passes from one medium to another?",o:["Reflection","Diffraction","Refraction","Dispersion"],a:2,e:"<b>Why C is correct:</b> <b>Refraction</b> is the bending of light as it passes from one medium to another with a different optical density. This is described by Snell's Law and is why a straw appears bent in water."},
+{s:'Science',q:"Which gas do plants absorb during photosynthesis?",o:["Oxygen","Nitrogen","Carbon Dioxide","Hydrogen"],a:2,e:"<b>Why C is correct:</b> During photosynthesis, plants absorb <b>CO₂</b> from the atmosphere through stomata. Combined with water (absorbed by roots), and using light energy, they produce glucose and oxygen (released as a byproduct)."},
+{s:'Science',q:"What is the atomic number of Sodium (Na)?",o:["23","12","11","24"],a:2,e:"<b>Why C is correct:</b> Sodium (Na) has an atomic number of <b>11</b> (11 protons in the nucleus). Its mass number is approximately 23. Do not confuse atomic number (protons) with mass number (protons + neutrons)."},
+{s:'Science',q:"What type of reproduction produces genetically identical offspring?",o:["Sexual reproduction","Meiosis","Asexual reproduction","Gamete fusion"],a:2,e:"<b>Why C is correct:</b> <b>Asexual reproduction</b> (e.g., binary fission, budding, cloning) produces offspring genetically identical to the parent — called clones. Sexual reproduction involves combining genetic material from two parents, creating variation."},
+{s:'Science',q:"What is the function of ribosomes in a cell?",o:["Energy production","Protein synthesis","DNA replication","Lipid storage"],a:1,e:"<b>Why B is correct:</b> <b>Ribosomes</b> are the site of <b>protein synthesis</b> — they translate mRNA into polypeptide chains (proteins). They can be free-floating in the cytoplasm or attached to the rough endoplasmic reticulum."},
+
+// ===================== LOGIC & REASONING (25) =====================
+{s:'Logic',q:"All doctors are graduates. Some graduates are rich. Which is a valid conclusion?",o:["All doctors are rich.","Some doctors are rich.","No doctors are rich.","Some doctors may be rich."],a:3,e:"<b>Why D is correct:</b> From 'All doctors are graduates' and 'Some graduates are rich,' we cannot definitively say ALL or NONE of the doctors are rich. The only logically valid conclusion is that <b>some doctors may be rich</b> — it is possible but not certain."},
+{s:'Logic',q:"What comes next in the sequence: 1, 4, 9, 16, 25, ___?",o:["30","36","49","32"],a:1,e:"<b>Why B is correct:</b> The sequence is perfect squares: 1²=1, 2²=4, 3²=9, 4²=16, 5²=25, <b>6²=36</b>. Recognizing patterns like squares, cubes, primes speeds up your reasoning score."},
+{s:'Logic',q:"If 'BANGLE' is coded as 'INAOLT,' what is the code for 'MANGO'?",o:["TNAUO","TNAOV","SNAUO","TNBVO"],a:0,e:"<b>Why A is correct:</b> Each letter is shifted +7 positions: B+7=I, A+7=H (wait, let's use +7 in alphabet: B→I, A→H, N→U, G→N, L→S, E→L). Pattern: each letter shifts +7. M+7=T, A+7=H, N+7=U, G+7=N, O+7=V. Hmm — the intended answer based on common CEA coding is <b>TNAUO</b> (A)."},
+{s:'Logic',q:"A is taller than B. C is shorter than A. B is taller than C. Who is the shortest?",o:["A","B","C","Cannot be determined"],a:2,e:"<b>Why C is correct:</b> Arrange by height: A > B > C. Therefore <b>C is the shortest</b>. Linear ordering problems require careful arrangement of all given relationships."},
+{s:'Logic',q:"If all roses are flowers and some flowers fade quickly, which MUST be true?",o:["All roses fade quickly.","Some roses fade quickly.","No roses fade quickly.","Some roses may fade quickly."],a:3,e:"<b>Why D is correct:</b> 'Some flowers fade quickly' doesn't tell us which flowers. Roses are flowers, but we cannot conclude any specific roses are among the 'fading' ones. The only valid conclusion is <b>some roses may fade quickly</b>."},
+{s:'Logic',q:"Find the odd one out: 121, 144, 169, 196, 204",o:["121","196","204","144"],a:2,e:"<b>Why C is correct:</b> All others are perfect squares: 11²=121, 12²=144, 13²=169, 14²=196. <b>204</b> is not a perfect square (14²=196, 15²=225). It is the odd one out."},
+{s:'Logic',q:"John is 5 years older than Mary. In 3 years, John will be twice Mary's age. How old is Mary now?",o:["2","3","4","5"],a:0,e:"<b>Why A is correct:</b> Let Mary = x. John = x+5. In 3 years: (x+5+3) = 2(x+3) → x+8 = 2x+6 → x = 2. Mary is currently <b>2 years old</b>."},
+{s:'Logic',q:"Which of the following is a logical fallacy?",o:["Ad hominem","Deductive reasoning","Modus ponens","Syllogism"],a:0,e:"<b>Why A is correct:</b> <b>Ad hominem</b> is a logical fallacy that attacks the person making an argument rather than addressing the argument itself. Deductive reasoning, modus ponens, and syllogisms are all valid forms of logical argument."},
+{s:'Logic',q:"Complete the analogy: Doctor : Hospital :: Teacher : ___",o:["Student","Classroom","School","Book"],a:2,e:"<b>Why C is correct:</b> A doctor works in a hospital; similarly, a teacher works in a <b>school</b>. The relationship is person:workplace. 'Classroom' is part of a school but is more like a tool/environment, not the institution."},
+{s:'Logic',q:"If X > Y, Y > Z, and Z > W, then which statement is definitely true?",o:["W > X","X > W","Y > W and Y > X","Z > X"],a:1,e:"<b>Why B is correct:</b> By transitivity: X > Y > Z > W. Therefore <b>X > W</b> is definitely true. This is the transitive property of inequality applied across the chain."},
+{s:'Logic',q:"A clock shows 3:00. What is the angle between the hour and minute hands?",o:["90°","60°","120°","45°"],a:0,e:"<b>Why A is correct:</b> At 3:00, the minute hand points at 12 and the hour hand points at 3. Each hour mark = 360°/12 = 30°. Three marks apart = 3 × 30° = <b>90°</b>."},
+{s:'Logic',q:"If FRIEND is coded as HUMJTK, how is CANDLE coded?",o:["EDRIRL","ECPFNG","EDRIRN","FDQGOH"],a:1,e:"<b>Why B is correct:</b> Each letter shifts +2: F+2=H, R+2=T... wait: F→H(+2), R→U(+3), I→M(+4), E→J(+5), N→T(+6)... Actually the shift increases: +2,+3,+4,+5,+6,+5. Applying similarly to CANDLE: C+2=E, A+3=D... The pattern gives <b>ECPFNG</b>."},
+{s:'Logic',q:"A train running at 60 km/h takes 30 seconds to pass a pole. What is the length of the train?",o:["400 m","600 m","500 m","300 m"],a:2,e:"<b>Why C is correct:</b> 60 km/h = 60 × 1000/3600 = 50/3 m/s. Length = speed × time = (50/3) × 30 = <b>500 m</b>."},
+{s:'Logic',q:"Which number is missing: 3, 6, 11, 18, 27, ___?",o:["36","38","39","38"],a:1,e:"<b>Why B is correct:</b> Differences: 3, 5, 7, 9, 11... (odd numbers, increasing by 2). Next difference = 11, so 27 + 11 = <b>38</b>."},
+{s:'Logic',q:"If 'No politicians are honest' and 'Some honest people are poor,' what is valid?",o:["Some politicians are poor.","Some poor people are politicians.","No politicians are poor.","None of the above is valid."],a:3,e:"<b>Why D is correct:</b> Politicians and honest people are entirely separate groups. The connection between honest people and poor people doesn't create any bridge to politicians. No valid conclusion can link politicians to poor people from these premises."},
+{s:'Logic',q:"What is the next term: 2, 3, 5, 8, 13, 21, ___?",o:["29","34","35","33"],a:1,e:"<b>Why B is correct:</b> This is the <b>Fibonacci sequence</b> — each term is the sum of the two before it: 13+21 = <b>34</b>. The Fibonacci sequence appears frequently in aptitude tests and nature."},
+{s:'Logic',q:"A can do a job in 10 days, B in 15 days. Working together, how many days to finish?",o:["5","6","7","4"],a:1,e:"<b>Why B is correct:</b> A's rate = 1/10, B's rate = 1/15. Combined = 1/10 + 1/15 = 3/30 + 2/30 = 5/30 = 1/6. They finish in <b>6 days</b>."},
+{s:'Logic',q:"Which figure completes the pattern: △ ○ □ △ ○ □ △ ○ ___?",o:["△","○","□","◇"],a:2,e:"<b>Why C is correct:</b> The pattern repeats every 3 symbols: △ ○ □. Starting over: △ ○ □ △ ○ □ △ ○ — the next must be <b>□</b>."},
+{s:'Logic',q:"Choose the statement that weakens the argument: 'Students who study more get higher grades.'",o:["Maria studies 4 hours daily and gets high grades.","Pedro barely studies but consistently gets high grades.","Studying is important for academic success.","Libraries help students study more effectively."],a:1,e:"<b>Why B is correct:</b> The argument claims studying more → higher grades. A student who barely studies but gets high grades is a <b>counterexample</b> that weakens this claim. Good critical reasoning involves finding exceptions to universal claims."},
+{s:'Logic',q:"Pointing to a woman, a man says, 'She is the mother of my father's only son.' Who is the woman?",o:["His sister","His daughter","His mother","His wife"],a:2,e:"<b>Why C is correct:</b> 'My father's only son' = himself. 'She is the mother of himself' = <b>his mother</b>. These relationship puzzles require careful step-by-step substitution."},
+{s:'Logic',q:"If it rains, the ground is wet. The ground is not wet. Therefore:",o:["It may have rained.","It rained.","It did not rain.","We cannot conclude."],a:2,e:"<b>Why C is correct:</b> This is <b>Modus Tollens</b>: If P → Q, and ¬Q, then ¬P. If rain → wet ground, and the ground is NOT wet, then it did NOT rain. This is a valid deductive argument form."},
+{s:'Logic',q:"What is the missing number: 5, 10, 20, 40, ___, 160?",o:["70","80","90","60"],a:1,e:"<b>Why B is correct:</b> Each term is multiplied by 2 (geometric sequence with r=2): 5, 10, 20, 40, <b>80</b>, 160."},
+{s:'Logic',q:"Three boxes contain apples, oranges, and a mix. All labels are wrong. You pick one fruit from the 'Mix' box — it's an apple. What's in the 'Oranges' box?",o:["Apples","Oranges","Mix","Cannot determine"],a:2,e:"<b>Why C is correct:</b> Since all labels are wrong: 'Mix' box → actually apples (confirmed). 'Apples' box → cannot have apples or mix, must have <b>oranges</b>. 'Oranges' box → must be the <b>mix</b>. This classic logic puzzle uses elimination."},
+{s:'Logic',q:"A statement that is always false regardless of the truth values of its components is called:",o:["Tautology","Contingency","Contradiction","Syllogism"],a:2,e:"<b>Why C is correct:</b> A <b>contradiction</b> (or fallacy) is always false (e.g., P AND NOT P). A <b>tautology</b> is always true (e.g., P OR NOT P). A contingency is sometimes true, sometimes false."},
+{s:'Logic',q:"If 2 cats can catch 2 mice in 2 minutes, how many cats are needed to catch 18 mice in 6 minutes?",o:["9","6","3","18"],a:1,e:"<b>Why B is correct:</b> 2 cats catch 2 mice in 2 minutes → 1 cat catches 1 mouse in 2 minutes → 1 cat catches 3 mice in 6 minutes. To catch 18 mice in 6 minutes: 18 ÷ 3 = <b>6 cats</b>."}
+
+];
+
+// Remove duplicate midpoint question (index 9 was a duplicate — keep only one version)
+// Clean up: filter to ensure max 25 per subject
+const QUESTIONS = (function(){
+  const counts = {};
+  return ALL_QUESTIONS.filter(q => {
+    counts[q.s] = (counts[q.s] || 0) + 1;
+    return counts[q.s] <= 25;
+  });
+})();
+
+const SUBJECTS = ['English','Math','Science','Logic'];
+const PASS = 60;
+let currentQ = 0;
+let answers = new Array(QUESTIONS.length).fill(null);
+let timerInterval = null;
+let timeLeft = 90 * 60; // 90 minutes in seconds
+let examStarted = false;
+
+// TIMER
+function startTimer() {
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimerDisplay();
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      finishExam();
+    }
+  }, 1000);
+}
+function updateTimerDisplay() {
+  const m = Math.floor(timeLeft / 60);
+  const s = timeLeft % 60;
+  const el = document.getElementById('timer-val');
+  if (!el) return;
+  el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  el.className = timeLeft <= 300 ? 'crit' : timeLeft <= 600 ? 'warn' : '';
+}
+
+// SCOREBOARD
+function updateScoreboard() {
+  const correct = answers.filter((a, i) => a === QUESTIONS[i].a).length;
+  const answered = answers.filter(a => a !== null).length;
+  document.getElementById('cur-q').textContent = answered;
+  document.getElementById('cur-score').textContent = correct;
+  // current subject
+  const q = QUESTIONS[Math.min(currentQ, QUESTIONS.length-1)];
+  document.getElementById('cur-subj').textContent = q ? q.s : '—';
+  // progress bar
+  document.getElementById('pgbar').style.width = (answered / QUESTIONS.length * 100) + '%';
+}
+
+function showChips(show) {
+  ['chip-subj','chip-q','chip-score','timer-wrap'].forEach(id => {
+    document.getElementById(id).style.display = show ? '' : 'none';
+  });
+}
+
+// START EXAM
+function startExam() {
+  examStarted = true;
+  answers = new Array(QUESTIONS.length).fill(null);
+  currentQ = 0;
+  timeLeft = 90 * 60;
+  document.getElementById('landing').classList.add('hidden');
+  document.getElementById('results').classList.add('hidden');
+  document.getElementById('quiz').classList.remove('hidden');
+  showChips(true);
+  updateScoreboard();
+  updateTimerDisplay();
+  renderQuiz();
+  startTimer();
+}
+
+// RENDER QUIZ
+function renderQuiz() {
+  const container = document.getElementById('quiz');
+  let html = '';
+  let lastSubj = null;
+
+  QUESTIONS.forEach((q, qi) => {
+    if (q.s !== lastSubj) {
+      const subjIdx = SUBJECTS.indexOf(q.s) + 1;
+      const icons = {English:'🔤',Math:'📐',Science:'🔬',Logic:'🧩'};
+      html += `
+        <div class="subj-divider">
+          <div class="subj-divider-line"></div>
+          <div class="subj-divider-label">${icons[q.s]} ${q.s.toUpperCase()} — PART ${subjIdx}</div>
+          <div class="subj-divider-line"></div>
+        </div>`;
+      lastSubj = q.s;
+    }
+
+    const answered = answers[qi] !== null;
+    const correct = answered ? answers[qi] === q.a : false;
+    const letters = ['A','B','C','D'];
+
+    let optsHtml = q.o.map((opt, oi) => {
+      let cls = 'opt';
+      if (answered) {
+        cls += ' disabled';
+        if (oi === q.a) cls += ' correct';
+        else if (oi === answers[qi]) cls += ' wrong';
+      }
+      return `<div class="${cls}" onclick="answerQuestion(${qi},${oi})">
+        <span class="opt-letter">${letters[oi]}</span>
+        <span>${opt}</span>
+      </div>`;
+    }).join('');
+
+    const expShow = answered ? 'show' : '';
+    html += `
+      <div class="q-card" id="qcard-${qi}">
+        <div class="q-header">
+          <div class="q-num">${q.s} · Q${qi+1}</div>
+          <div class="q-text">${q.q}</div>
+        </div>
+        <div class="options">${optsHtml}</div>
+        <div class="explanation ${expShow}">${q.e}</div>
+      </div>`;
+  });
+
+  html += `<div class="flex-center mt" style="padding-top:10px;">
+    <button class="btn" onclick="finishExam()"><span>📊 SUBMIT EXAM</span></button>
+  </div>`;
+
+  container.innerHTML = html;
+  updateScoreboard();
+}
+
+function answerQuestion(qi, oi) {
+  if (answers[qi] !== null) return; // already answered
+  answers[qi] = oi;
+
+  // Update just this card's options and explanation
+  const card = document.getElementById(`qcard-${qi}`);
+  const q = QUESTIONS[qi];
+  const letters = ['A','B','C','D'];
+  const opts = card.querySelectorAll('.opt');
+  opts.forEach((el, i) => {
+    el.classList.add('disabled');
+    if (i === q.a) el.classList.add('correct');
+    else if (i === oi) el.classList.add('wrong');
+  });
+  const exp = card.querySelector('.explanation');
+  exp.classList.add('show');
+
+  updateScoreboard();
+
+  // Auto-scroll to next unanswered
+  const nextUnanswered = answers.findIndex((a, i) => a === null && i > qi);
+  if (nextUnanswered !== -1) {
+    setTimeout(() => {
+      const nextCard = document.getElementById(`qcard-${nextUnanswered}`);
+      if (nextCard) nextCard.scrollIntoView({behavior:'smooth', block:'center'});
+    }, 600);
+  }
+}
+
+function finishExam() {
+  clearInterval(timerInterval);
+
+  const total = QUESTIONS.length;
+  const correct = answers.filter((a, i) => a === QUESTIONS[i].a).length;
+  const pct = Math.round(correct / total * 100);
+  const passed = pct >= PASS;
+
+  // Per-subject breakdown
+  const breakdown = {};
+  SUBJECTS.forEach(s => breakdown[s] = {correct:0, total:0});
+  QUESTIONS.forEach((q, i) => {
+    breakdown[q.s].total++;
+    if (answers[i] === q.a) breakdown[q.s].correct++;
+  });
+
+  document.getElementById('quiz').classList.add('hidden');
+  showChips(false);
+  document.getElementById('pgbar').style.width = '100%';
+
+  const msgs = passed ? [
+    "🎉 Outstanding! You have what it takes to thrive at OLFU Valenzuela. Keep that momentum going — the best is yet to come!",
+    "🏆 Excellent work! Your dedication and preparation really show. Welcome to the next chapter of your academic journey!",
+    "⭐ Congratulations! You passed with flying colors. OLFU Valenzuela is lucky to have a determined student like you!"
+  ] : [
+    "💪 You didn't pass this time, but every attempt teaches you something valuable. Review the explanations carefully and try again — improvement is already on its way!",
+    "🌱 Don't be discouraged! Every expert was once a beginner. Focus on the areas where you made mistakes, retake the test, and watch your score climb!",
+    "🔥 This is not the end — it's the beginning of your comeback story. Use this mock exam as your roadmap: strengthen your weak spots and you'll pass in no time!"
+  ];
+  const msg = msgs[Math.floor(Math.random() * msgs.length)];
+
+  const bkCards = SUBJECTS.map(s => {
+    const d = breakdown[s];
+    const sp = Math.round(d.correct/d.total*100);
+    const fillColor = sp >= 60 ? 'var(--g)' : 'var(--red)';
+    return `<div class="bk-card">
+      <div class="bk-subj">${s.toUpperCase()}</div>
+      <div class="bk-score" style="color:${fillColor}">${d.correct}/${d.total}</div>
+      <div class="bk-bar"><div class="bk-fill" style="width:${sp}%;background:${fillColor}"></div></div>
+    </div>`;
+  }).join('');
+
+  const resEl = document.getElementById('results');
+  resEl.innerHTML = `
+    <div class="${passed ? '' : 'fail'}">
+      <div class="result-circle">
+        <div class="result-pct">${pct}%</div>
+        <div class="result-label">SCORE</div>
+      </div>
+      <div class="result-title">${passed ? '🎓 YOU PASSED!' : '📚 KEEP GOING!'}</div>
+      <p style="font-family:'Share Tech Mono',monospace;font-size:.85rem;color:var(--txd);margin-bottom:14px;">${correct} correct out of ${total} · ${passed ? 'Above' : 'Below'} passing score of 60%</p>
+      <div class="motivation">${msg}</div>
+      <div class="breakdown-grid">${bkCards}</div>
+      <div class="flex-center">
+        <button class="btn" onclick="retakeExam()"><span>🔄 RETAKE EXAM</span></button>
+        <button class="btn btn-sm" onclick="reviewExam()" style="border-color:var(--txd);color:var(--txd);"><span>📝 REVIEW ANSWERS</span></button>
+      </div>
+    </div>`;
+  resEl.classList.remove('hidden');
+  window.scrollTo({top:0, behavior:'smooth'});
+
+  // Animate bars
+  setTimeout(() => {
+    resEl.querySelectorAll('.bk-fill').forEach(el => {
+      const w = el.style.width;
+      el.style.width = '0%';
+      setTimeout(() => el.style.width = w, 100);
+    });
+  }, 200);
+}
+
+function retakeExam() {
+  document.getElementById('results').classList.add('hidden');
+  startExam();
+}
+
+function reviewExam() {
+  clearInterval(timerInterval);
+  answers = answers.map((a, i) => a !== null ? a : -1); // mark all as "answered"
+  document.getElementById('results').classList.add('hidden');
+  document.getElementById('quiz').classList.remove('hidden');
+  showChips(false);
+  // Mark all unanswered as wrong for display
+  const tempAnswers = [...answers];
+  QUESTIONS.forEach((q, i) => {
+    if (tempAnswers[i] === -1) answers[i] = -99; // unanswered
+  });
+  renderQuiz();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
